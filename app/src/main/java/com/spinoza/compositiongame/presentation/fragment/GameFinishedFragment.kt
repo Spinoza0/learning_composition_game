@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.spinoza.compositiongame.databinding.FragmentGameFinishedBinding
 import com.spinoza.compositiongame.domain.entity.GameResult
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class GameFinishedFragment : Fragment() {
     private lateinit var gameResult: GameResult
 
@@ -50,8 +48,16 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parseArguments() {
-        gameResult =
-            requireArguments().getSerializable(GAME_RESULT, GameResult::class.java) as GameResult
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(GAME_RESULT, GameResult::class.java)?.let {
+                gameResult = it
+            }
+        } else {
+            @Suppress("deprecation")
+            requireArguments().getParcelable<GameResult>(GAME_RESULT)?.let {
+                gameResult = it
+            }
+        }
     }
 
     private fun retryGame() {
@@ -64,9 +70,7 @@ class GameFinishedFragment : Fragment() {
 
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(GAME_RESULT, gameResult)
-                }
+                arguments = Bundle().apply { putParcelable(GAME_RESULT, gameResult) }
             }
         }
     }

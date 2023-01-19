@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentGameBinding
 import com.spinoza.compositiongame.domain.entity.GameResult
 import com.spinoza.compositiongame.domain.entity.Level
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
@@ -45,7 +43,16 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArguments() {
-        level = requireArguments().getSerializable(KEY_LEVEL, Level::class.java) as Level
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let {
+                level = it
+            }
+        } else {
+            @Suppress("deprecation")
+            requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
+                level = it
+            }
+        }
     }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
@@ -61,9 +68,7 @@ class GameFragment : Fragment() {
 
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(KEY_LEVEL, level)
-                }
+                arguments = Bundle().apply { putParcelable(KEY_LEVEL, level) }
             }
         }
     }

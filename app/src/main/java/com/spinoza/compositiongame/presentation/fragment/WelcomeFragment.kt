@@ -1,16 +1,13 @@
 package com.spinoza.compositiongame.presentation.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentWelcomeBinding
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class WelcomeFragment : Fragment() {
 
     private var _binding: FragmentWelcomeBinding? = null

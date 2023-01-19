@@ -1,17 +1,14 @@
 package com.spinoza.compositiongame.presentation.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentChooseLevelBinding
 import com.spinoza.compositiongame.domain.entity.Level
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class ChooseLevelFragment : Fragment() {
     private var _binding: FragmentChooseLevelBinding? = null
     private val binding: FragmentChooseLevelBinding
