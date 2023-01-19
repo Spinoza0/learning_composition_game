@@ -1,12 +1,16 @@
 package com.spinoza.compositiongame.presentation.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentWelcomeBinding
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class WelcomeFragment : Fragment() {
 
     private var _binding: FragmentWelcomeBinding? = null
@@ -25,12 +29,19 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonUnderstand.setOnClickListener {
-
+            launchChooseLevelFragment()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun launchChooseLevelFragment() {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.mainContainer, ChooseLevelFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 }

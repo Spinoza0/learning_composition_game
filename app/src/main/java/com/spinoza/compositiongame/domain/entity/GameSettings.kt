@@ -5,4 +5,4 @@ data class GameSettings(
     val minCountOfRightAnswers: Int,
     val minPercentOfRightAnswers: Int,
     val durationInSeconds: Int,
-)
+): java.io.Serializable

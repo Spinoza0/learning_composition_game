@@ -5,4 +5,4 @@ data class GameResult(
     val countOfRightAnswers: Int,
     val countOfQuestion: Int,
     val gameSettings: GameSettings,
-)
+) : java.io.Serializable

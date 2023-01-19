@@ -1,12 +1,17 @@
 package com.spinoza.compositiongame.presentation.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentChooseLevelBinding
+import com.spinoza.compositiongame.domain.entity.Level
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class ChooseLevelFragment : Fragment() {
     private var _binding: FragmentChooseLevelBinding? = null
     private val binding: FragmentChooseLevelBinding
@@ -23,11 +28,27 @@ class ChooseLevelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.buttonLevelTest.setOnClickListener { launchGameFragment(Level.TEST) }
+        binding.buttonLevelEasy.setOnClickListener { launchGameFragment(Level.EASY) }
+        binding.buttonLevelNormal.setOnClickListener { launchGameFragment(Level.NORMAL) }
+        binding.buttonLevelHard.setOnClickListener { launchGameFragment(Level.HARD) }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun launchGameFragment(level: Level) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.mainContainer, GameFragment.newInstance(level))
+            .addToBackStack(GameFragment.NAME)
+            .commit()
+    }
+
+    companion object {
+        fun newInstance(): ChooseLevelFragment {
+            return ChooseLevelFragment()
+        }
     }
 }
