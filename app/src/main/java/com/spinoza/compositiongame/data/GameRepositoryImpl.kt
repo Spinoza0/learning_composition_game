@@ -21,7 +21,7 @@ object GameRepositoryImpl : GameRepository {
     private const val EASY_MAX_SUM_VALUE = 10
     private const val EASY_COUNT_OF_RIGHT_ANSWERS = 10
     private const val EASY_PERCENT_OF_RIGHT_ANSWERS = 70
-    private const val EASY_DURATION_IN_SECONDS = 6
+    private const val EASY_DURATION_IN_SECONDS = 60
 
     private const val NORMAL_MAX_SUM_VALUE = 20
     private const val NORMAL_COUNT_OF_RIGHT_ANSWERS = 20
