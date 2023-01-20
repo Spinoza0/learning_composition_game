@@ -22,11 +22,13 @@ import kotlin.random.Random
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
+
+    private val viewModelFactory: GameViewModelFactory by lazy {
+        GameViewModelFactory(requireActivity().application, GameRepositoryImpl, level)
+    }
+
     private val viewModel: GameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            GameViewModelFactory(requireActivity().application, GameRepositoryImpl)
-        )[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     private val textViewOptions by lazy {
@@ -62,7 +64,6 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setObservers()
         setListeners()
-        viewModel.startGame(level)
     }
 
     override fun onDestroyView() {

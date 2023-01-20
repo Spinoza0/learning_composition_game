@@ -15,14 +15,17 @@ import com.spinoza.compositiongame.domain.usecases.GenerateQuestionUseCase
 import com.spinoza.compositiongame.domain.usecases.GetGameSettingsUseCase
 import com.spinoza.compositiongame.presentation.calculatePercent
 
-class GameViewModel(application: Application, repository: GameRepository) :
+class GameViewModel(
+    application: Application,
+    repository: GameRepository,
+    private val level: Level,
+) :
     AndroidViewModel(application) {
     private val context = application
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
     private val getGameSettingsUseCase = GetGameSettingsUseCase(repository)
 
     private lateinit var gameSettings: GameSettings
-    private lateinit var level: Level
     private var timer: CountDownTimer? = null
 
     private var countOfRightAnswers = 0
@@ -60,8 +63,12 @@ class GameViewModel(application: Application, repository: GameRepository) :
     val gameResult: LiveData<GameResult>
         get() = _gameResult
 
-    fun startGame(level: Level) {
-        getGameSettings(level)
+    init {
+        startGame()
+    }
+
+    private fun startGame() {
+        getGameSettings()
         generateQuestion()
         startTimer()
         updateProgress()
@@ -96,9 +103,8 @@ class GameViewModel(application: Application, repository: GameRepository) :
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)
     }
 
-    private fun getGameSettings(level: Level) {
-        this.level = level
-        this.gameSettings = getGameSettingsUseCase(level)
+    private fun getGameSettings() {
+        gameSettings = getGameSettingsUseCase(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswers
     }
 
