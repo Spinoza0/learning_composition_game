@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import androidx.navigation.fragment.findNavController
 import com.spinoza.compositiongame.R
 import com.spinoza.compositiongame.databinding.FragmentGameFinishedBinding
 import com.spinoza.compositiongame.domain.entity.GameResult
@@ -36,12 +35,6 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-            })
 
         setContent()
         setListeners()
@@ -94,17 +87,10 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager
-            .popBackStack(GameFragment.NAME, POP_BACK_STACK_INCLUSIVE)
+        findNavController().popBackStack()
     }
 
     companion object {
-        private const val GAME_RESULT = "gameResult"
-
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply { putParcelable(GAME_RESULT, gameResult) }
-            }
-        }
+        const val GAME_RESULT = "gameResult"
     }
 }
