@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.spinoza.compositiongame.presentation.viewmodel.GameViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -13,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:text="@{viewModel.formattedTime}"
             android:textColor="@color/purple_700"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
+            app:numberAsText="@{viewModel.question.sum}"
             tools:text="1" />
 
         <TextView
@@ -45,6 +54,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textViewSum"
+            app:numberAsText="@{viewModel.question.visibleNumber}"
             tools:text="7" />
 
         <TextView
@@ -70,6 +80,7 @@
             app:layout_constraintEnd_toStartOf="@id/textViewOption5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="1" />
 
         <TextView
@@ -81,6 +92,7 @@
             app:layout_constraintBottom_toTopOf="@id/textViewOption4"
             app:layout_constraintEnd_toStartOf="@id/textViewOption6"
             app:layout_constraintStart_toEndOf="@id/textViewOption4"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="2" />
 
         <TextView
@@ -92,6 +104,7 @@
             app:layout_constraintBottom_toTopOf="@id/textViewOption4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/textViewOption5"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="3" />
 
         <TextView
@@ -104,6 +117,7 @@
             app:layout_constraintEnd_toStartOf="@id/textViewOption5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="4" />
 
         <TextView
@@ -115,6 +129,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/textViewOption6"
             app:layout_constraintStart_toEndOf="@id/textViewOption4"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="5" />
 
         <TextView
@@ -126,6 +141,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/textViewOption5"
+            app:onOptionClickListener="@{(option) -> viewModel.chooseAnswer(option) }"
             tools:text="6" />
 
         <TextView
@@ -133,7 +149,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/progress_answers"
+            android:text="@{viewModel.formattedProgressAnswers}"
+            app:enoughCountOfRightAnswers="@{viewModel.enoughCountOfRightAnswers}"
             app:layout_constraintBottom_toTopOf="@id/progressBar"
             app:layout_constraintTop_toBottomOf="@id/textViewLeftNumber"
             app:layout_constraintVertical_chainStyle="spread" />
@@ -144,11 +161,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:max="100"
+            android:secondaryProgress="@{viewModel.minPercent}"
             android:secondaryProgressTint="@android:color/background_dark"
+            app:enoughPercentOfRightAnswers="@{viewModel.enoughPercentOfRightAnswers}"
             app:layout_constraintBottom_toTopOf="@+id/textViewOption2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewAnswersProgress" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewAnswersProgress"
+            app:percentOfRightAnswers="@{viewModel.percentOfRightAnswers}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
