@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.spinoza.compositiongame.R
+import androidx.navigation.fragment.findNavController
 import com.spinoza.compositiongame.databinding.FragmentChooseLevelBinding
 import com.spinoza.compositiongame.domain.entity.Level
 
@@ -37,15 +37,8 @@ class ChooseLevelFragment : Fragment() {
     }
 
     private fun launchGameFragment(level: Level) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.mainContainer, GameFragment.newInstance(level))
-            .addToBackStack(GameFragment.NAME)
-            .commit()
-    }
-
-    companion object {
-        fun newInstance(): ChooseLevelFragment {
-            return ChooseLevelFragment()
-        }
+        findNavController().navigate(ChooseLevelFragmentDirections
+            .actionChooseLevelFragmentToGameFragment(level)
+        )
     }
 }
