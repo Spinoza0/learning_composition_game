@@ -48,11 +48,11 @@ class GameViewModel(
         get() = _formattedProgressAnswers
 
     private val _enoughCountORightAnswers = MutableLiveData<Boolean>()
-    val enoughCountORightAnswers: LiveData<Boolean>
+    val enoughCountOfRightAnswers: LiveData<Boolean>
         get() = _enoughCountORightAnswers
 
     private val _enoughPercentORightAnswers = MutableLiveData<Boolean>()
-    val enoughPercentORightAnswers: LiveData<Boolean>
+    val enoughPercentOfRightAnswers: LiveData<Boolean>
         get() = _enoughPercentORightAnswers
 
     private val _minPercent = MutableLiveData<Int>()
@@ -133,8 +133,8 @@ class GameViewModel(
 
     private fun finishGame() {
         _gameResult.value = GameResult(
-            enoughCountORightAnswers.value == true &&
-                    enoughPercentORightAnswers.value == true,
+            enoughCountOfRightAnswers.value == true &&
+                    enoughPercentOfRightAnswers.value == true,
             countOfRightAnswers,
             countOfQuestions,
             gameSettings

@@ -1,12 +1,10 @@
 package com.spinoza.compositiongame.presentation.fragment
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -56,8 +54,9 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         setObservers()
-        setListeners()
     }
 
     override fun onDestroyView() {
@@ -65,53 +64,17 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
-    private fun setListeners() {
-        textViewOptions.forEach { textView ->
-            textView.setOnClickListener {
-                textView.text?.let { viewModel.chooseAnswer(it.toString().toInt()) }
-            }
-        }
-    }
-
     private fun setObservers() {
-        with(binding) {
-            viewModel.formattedTime.observe(viewLifecycleOwner) { textViewTimer.text = it }
-            viewModel.question.observe(viewLifecycleOwner) {
-                textViewSum.text = it.sum.toString()
-                textViewLeftNumber.text = it.visibleNumber.toString()
-                val options = ArrayList<Int>(it.options)
-                while (options.size > 0) {
-                    textViewOptions[options.size - 1].text = getOption(options)
-                }
-            }
-            viewModel.formattedProgressAnswers.observe(viewLifecycleOwner) {
-                textViewAnswersProgress.text = it
-            }
-            viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-                progressBar.setProgress(it, true)
-            }
-            viewModel.enoughCountORightAnswers.observe(viewLifecycleOwner) {
-                textViewAnswersProgress.setTextColor(getColorByState(it))
-            }
-            viewModel.enoughPercentORightAnswers.observe(viewLifecycleOwner) {
-                progressBar.progressTintList = ColorStateList.valueOf(getColorByState(it))
-            }
-            viewModel.minPercent.observe(viewLifecycleOwner) {
-                progressBar.secondaryProgress = it
-            }
-            viewModel.gameResult.observe(viewLifecycleOwner) {
-                launchGameFinishedFragment(it)
+        viewModel.question.observe(viewLifecycleOwner) {
+            val options = ArrayList<Int>(it.options)
+            while (options.size > 0) {
+                textViewOptions[options.size - 1].text = getOption(options)
             }
         }
-    }
 
-    private fun getColorByState(goodState: Boolean): Int {
-        val colorResId = if (goodState) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
+        viewModel.gameResult.observe(viewLifecycleOwner) {
+            launchGameFinishedFragment(it)
         }
-        return ContextCompat.getColor(requireContext(), colorResId)
     }
 
     private fun getOption(options: ArrayList<Int>): String {
